@@ -1,0 +1,137 @@
+﻿<html lang="tr">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+
+</head>
+<body>
+
+<!-- Page Content -->
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <h1 class="mt-5 text-primary">Caps Oluştur</h1>
+          <h2>Caps Oluşturmak için Resim Seçin:</h2>
+        </div>
+      </div>
+	  
+	  <div class="row">
+		<div class="col-lg-12 text-center">
+          <input type="file" id="resim" name="resim" />
+        </div>
+		<div id="yakala" class="text-center">
+			<canvas id="imageCanvas"></canvas>
+			<div id="change">	
+	
+				<p id="demo" ></p>		
+			</div>
+		</div>
+      </div>
+	  
+	  <div class="row">
+	  <div class="col-lg-4 text-right">
+				<select name="bgcolor" id="bgcolor" onchange="colorDiv()" style="height:30px"> 
+                    <option class="1" value="1"> Grey </option>
+                    <option class="2" value="2"> Purple </option>
+                    <option class="3" value=3> Blue</option>
+                    <option class="4" value=4> Cian</option>
+                    <option class="5" value=5> Green</option>
+					<option class="6" value=6> Red</option>
+                </select> 
+			</div>
+		<div class="col-lg-4 text-center">
+				<textarea  style="width:100%; height:30px;"  id="myTextarea" placeholder="Yazmak istediğiniz yazıyı buraya yazın."></textarea>
+		</div>
+		
+			<div class="col-lg-4 text-left">
+				<button type="button" onclick="myFunction()" class="btn btn-primary">Caps Oluştur</button>
+			</div>
+		
+			
+	
+    </div>
+	<div class="row">
+		<div class="col-lg-12 text-center">
+			<button class="btn btn-primary" onclick="takeScreenShot()">Kaydet</button>
+		</div>
+	</div>
+
+
+
+<script src="include/html2canvas.js"></script>
+<script>
+//resim upload eden fonksiyon
+var resim = document.getElementById('resim');
+    resim.addEventListener('change', handleImage, false);
+var canvas = document.getElementById('imageCanvas');
+var ctx = canvas.getContext('2d');
+
+
+function handleImage(e){
+    var reader = new FileReader();
+    reader.onload = function(event){
+        var img = new Image();
+        img.onload = function(){
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img,0,0);
+        }
+        img.src = event.target.result;
+    }
+    reader.readAsDataURL(e.target.files[0]);     
+}
+//div e renk secen fonksiyon
+function colorDiv() {
+    var selection = document.getElementById('bgcolor').value;
+    var div = document.getElementById('change');
+ //   div.style.backgroundColor = 'green';
+
+    document.getElementById("demo").innerHTML = selection;
+
+    switch (selection) {
+        case "1":
+            div.style.backgroundColor = 'grey';
+            break;
+        case "2":
+            div.style.backgroundColor = 'purple';
+            break;
+        case "3":
+            div.style.backgroundColor = 'blue';
+            break;
+        case "4":
+            div.style.backgroundColor = 'cyan';
+            break;
+        case "5":
+            div.style.backgroundColor = 'green';
+            break;
+		case "6":
+            div.style.backgroundColor = 'red';
+            break;
+    }
+}
+
+function myFunction() {
+    var yazi = document.getElementById("myTextarea").value;
+	var  yazialan = document.getElementById("demo")
+    yazialan.innerHTML = yazi;
+	var resim = document.getElementById("imageCanvas");
+	var resimW = resim.width;
+	yazialan.style.width = resimW+"px";
+}	
+
+//canvas ın screenshot'ını alan fonksiyon
+window.takeScreenShot = function() {
+    html2canvas(document.getElementById("yakala"), {
+        onrendered: function (canvas) {
+            document.body.appendChild(canvas);
+        },
+     width:canvas.width,
+	 height:canvas.height
+    });
+}
+
+</script>
+
+</body>
+</html>
